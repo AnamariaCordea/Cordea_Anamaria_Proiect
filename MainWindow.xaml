@@ -49,11 +49,11 @@
                         <Label Content="Varsta:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="4" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
                         <TextBox x:Name="varstaTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="2.6,4,-0.2,4" Grid.Row="4" Text="{Binding Varsta, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
                     </Grid>
-                    <Button x:Name="btnNewa" Content="New" HorizontalAlignment="Left" Margin="28,43,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnEdita" Content="Edit" HorizontalAlignment="Left" Margin="28,104,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnDeletea" Content="Delete" HorizontalAlignment="Left" Margin="28,161,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnSavea" Content="Save" HorizontalAlignment="Left" Margin="28,215,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnCancela" Content="Cancel" HorizontalAlignment="Left" Margin="28,278,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnNewa" Content="Adauga" HorizontalAlignment="Left" Margin="28,43,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnEdita" Content="Editeaza" HorizontalAlignment="Left" Margin="28,104,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnDeletea" Content="Sterge" HorizontalAlignment="Left" Margin="28,161,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnSavea" Content="Salveaza" HorizontalAlignment="Left" Margin="28,215,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnCancela" Content="Anuleaza" HorizontalAlignment="Left" Margin="28,278,0,0" VerticalAlignment="Top" Width="75"/>
                     <DataGrid x:Name="animaleDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="186,25,44.4,201.8" RowDetailsVisibilityMode="VisibleWhenSelected">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="animalIdColumn" Binding="{Binding AnimalId}" Header="Animal Id" Width="SizeToHeader"/>
@@ -95,11 +95,11 @@
                         <Label Content="Zi:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
                         <TextBox x:Name="ziTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" Text="{Binding Zi, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
                     </Grid>
-                    <Button x:Name="btnNewm" Content="New" HorizontalAlignment="Left" Margin="28,43,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnEditm" Content="Edit" HorizontalAlignment="Left" Margin="28,104,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnDeletem" Content="Delete" HorizontalAlignment="Left" Margin="28,161,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnSavem" Content="Save" HorizontalAlignment="Left" Margin="28,215,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnCancelm" Content="Cancel" HorizontalAlignment="Left" Margin="28,278,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnNewm" Content="Adauga" HorizontalAlignment="Left" Margin="28,43,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnEditm" Content="Editeaza" HorizontalAlignment="Left" Margin="28,104,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnDeletem" Content="Sterge" HorizontalAlignment="Left" Margin="28,161,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnSavem" Content="Salveaza" HorizontalAlignment="Left" Margin="28,215,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnCancelm" Content="Anuleaza" HorizontalAlignment="Left" Margin="28,278,0,0" VerticalAlignment="Top" Width="75"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Programari">

@@ -8,13 +8,40 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Window.Resources>
-        <CollectionViewSource x:Key="animaleViewSource" d:DesignSource="{d:DesignInstance {x:Type DatabaseModel:Animale}, CreateList=True}"/>
-        <CollectionViewSource x:Key="mediciViewSource" d:DesignSource="{d:DesignInstance {x:Type DatabaseModel:Medici}, CreateList=True}"/>
+        <CollectionViewSource x:Key="animalViewSource" d:DesignSource="{d:DesignInstance {x:Type DatabaseModel:Animale}, CreateList=True}"/>
+        <CollectionViewSource x:Key="programariViewSource" d:DesignSource="{d:DesignInstance {x:Type DatabaseModel:Programari}, CreateList=True}"/>
+        <CollectionViewSource x:Key="medicViewSource" d:DesignSource="{d:DesignInstance {x:Type DatabaseModel:Medici}, CreateList=True}"/>
+        <!--<CollectionViewSource x:Key="animalProgramariViewSource" Source="{Binding Appointments, Source={StaticResource animalViewSource}}"/>-->
+        <CollectionViewSource x:Key="animalProgramariViewSource" Source="{Binding Programari, Source={StaticResource animalViewSource}}"/> <!--Appointments-->
+        <ControlTemplate x:Key="validationTemplate">
+            <DockPanel>
+                <TextBlock Foreground="Red" FontSize="20">!</TextBlock>
+                <AdornedElementPlaceholder/>
+            </DockPanel>
+        </ControlTemplate>
+        <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
-    <Grid>
-        <TabControl HorizontalAlignment="Left" Height="353" Margin="108,37,0,0" VerticalAlignment="Top" Width="636">
+    <Grid Background="#48D1CC">
+        <TabControl x:Name="tabCtrlDatabase" HorizontalAlignment="Left" Height="353" Margin="108,37,0,0" VerticalAlignment="Top" Width="636">
             <TabItem Header="Animale">
-                <Grid Background="#FFE5E5E5" DataContext="{StaticResource animaleViewSource}">
+                <Grid Background="#B0E0E6" DataContext="{StaticResource animalViewSource}">
+                    <DataGrid x:Name="animaleDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="186,25,44.4,201.8" RowDetailsVisibilityMode="VisibleWhenSelected">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="animalIdColumn" Binding="{Binding AnimalId}" Header="Animal Id" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="problemaColumn" Binding="{Binding Problema}" Header="Problema" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="rasaColumn" Binding="{Binding Rasa}" Header="Rasa" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="tipColumn" Binding="{Binding Tip}" Header="Tip" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="varstaColumn" Binding="{Binding Varsta}" Header="Varsta" Width="SizeToHeader"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                     <Grid x:Name="grid1" HorizontalAlignment="Left" Margin="288,157,0,-0.2" VerticalAlignment="Top" Height="168" Width="188">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0"/>
@@ -29,50 +56,35 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Label Content="Animal Id:" Grid.Column="0" HorizontalAlignment="Right" Margin="0,4,5.4,3.8" Grid.Row="0" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
-                        <TextBox x:Name="animalIdTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="2.6,4,-0.2,4" Grid.Row="0" Text="{Binding AnimalId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"  IsEnabled="False"/>
+                        <Label Content="Animal Id:" Grid.Column="0" HorizontalAlignment="Right" Margin="0,4,5.4,3.8" Grid.Row="0" VerticalAlignment="Center" Grid.ColumnSpan="3" />
+                        <TextBox x:Name="animalIdTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="2.6,4,-0.2,4" Grid.Row="0" Text="{Binding AnimalId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/> <!--IsEnabled="False"-->
                         <Label Content="Problema:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="1" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
-                        <TextBox x:Name="problemaTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="2.6,4,-0.2,4" Grid.Row="1" Text="{Binding Problema, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" RenderTransformOrigin="0.5,0.5">
-                            <TextBox.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="-0.277"/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </TextBox.RenderTransform>
-                        </TextBox>
+                        <TextBox x:Name="problemaTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="2.6,4,-0.2,4" Grid.Row="1" Text="{Binding Problema, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" RenderTransformOrigin="0.5,0.5" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}"/>
                         <Label Content="Rasa:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="2" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
-                        <TextBox x:Name="rasaTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="2.6,4,-0.2,4" Grid.Row="2" Text="{Binding Rasa, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                        <TextBox x:Name="rasaTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="2.6,4,-0.2,4" Grid.Row="2" Text="{Binding Rasa, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" Validation.ErrorTemplate="{StaticResource validationTemplate}" Style="{StaticResource textBoxInError}"/>
                         <Label Content="Tip:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="3" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
                         <TextBox x:Name="tipTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="2.6,4,-0.2,4" Grid.Row="3" Text="{Binding Tip, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
                         <Label Content="Varsta:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="4" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
                         <TextBox x:Name="varstaTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="24" Margin="2.6,4,-0.2,4" Grid.Row="4" Text="{Binding Varsta, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
                     </Grid>
-                    <Button x:Name="btnNewa" Content="Adauga" HorizontalAlignment="Left" Margin="28,43,0,0" VerticalAlignment="Top" Width="75"/>
+                    <!--<Button x:Name="btnNewa" Content="Adauga" HorizontalAlignment="Left" Margin="28,43,0,0" VerticalAlignment="Top" Width="75"/>
                     <Button x:Name="btnEdita" Content="Editeaza" HorizontalAlignment="Left" Margin="28,104,0,0" VerticalAlignment="Top" Width="75"/>
                     <Button x:Name="btnDeletea" Content="Sterge" HorizontalAlignment="Left" Margin="28,161,0,0" VerticalAlignment="Top" Width="75"/>
                     <Button x:Name="btnSavea" Content="Salveaza" HorizontalAlignment="Left" Margin="28,215,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnCancela" Content="Anuleaza" HorizontalAlignment="Left" Margin="28,278,0,0" VerticalAlignment="Top" Width="75"/>
-                    <DataGrid x:Name="animaleDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="186,25,44.4,201.8" RowDetailsVisibilityMode="VisibleWhenSelected">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn x:Name="animalIdColumn" Binding="{Binding AnimalId}" Header="Animal Id" Width="SizeToHeader"/>
-                            <DataGridTextColumn x:Name="problemaColumn" Binding="{Binding Problema}" Header="Problema" Width="SizeToHeader"/>
-                            <DataGridTextColumn x:Name="rasaColumn" Binding="{Binding Rasa}" Header="Rasa" Width="SizeToHeader"/>
-                            <DataGridTextColumn x:Name="tipColumn" Binding="{Binding Tip}" Header="Tip" Width="SizeToHeader"/>
-                            <DataGridTextColumn x:Name="varstaColumn" Binding="{Binding Varsta}" Header="Varsta" Width="SizeToHeader"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Button x:Name="btnCancela" Content="Anuleaza" HorizontalAlignment="Left" Margin="28,278,0,0" VerticalAlignment="Top" Width="75"/>-->
+                    <Button x:Name="btnPreviousa" Content="Ant" HorizontalAlignment="Left" Margin="229,128,0,0" VerticalAlignment="Top" Width="75" Click="btnPreviousa_Click"/>
+                    <Button x:Name="btnNexta" Content="Urm" HorizontalAlignment="Left" Margin="511,128,0,0" VerticalAlignment="Top" Width="75" Click="btnNexta_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Medici">
-                <Grid Background="#FFE5E5E5" DataContext="{StaticResource mediciViewSource}">
+                <Grid Background="#B0E0E6" DataContext="{StaticResource medicViewSource}">
                     <DataGrid x:Name="mediciDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="182,36,10.4,179.8" RowDetailsVisibilityMode="VisibleWhenSelected">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="medicIdColumn" Binding="{Binding MedicId}" Header="Medic Id" Width="SizeToHeader"/>
                             <DataGridTextColumn x:Name="numeColumn" Binding="{Binding Nume}" Header="Nume" Width="SizeToHeader"/>
                             <DataGridTextColumn x:Name="prenumeColumn" Binding="{Binding Prenume}" Header="Prenume" Width="SizeToHeader"/>
                             <DataGridTextColumn x:Name="ziColumn" Binding="{Binding Zi}" Header="Zi" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="oraColumn" Binding="{Binding Ora}" Header="Ora" Width="SizeToHeader"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <Grid x:Name="grid2" HorizontalAlignment="Left" Margin="285,150,0,0" VerticalAlignment="Top" Height="144" Width="199">
@@ -94,18 +106,126 @@
                         <TextBox x:Name="prenumeTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" Text="{Binding Prenume, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
                         <Label Content="Zi:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
                         <TextBox x:Name="ziTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" Text="{Binding Zi, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                        <Label Content="Ora:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+                        <TextBox x:Name="oraTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" Text="{Binding Ora, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
                     </Grid>
-                    <Button x:Name="btnNewm" Content="Adauga" HorizontalAlignment="Left" Margin="28,43,0,0" VerticalAlignment="Top" Width="75"/>
+                    <!--<Button x:Name="btnNewm" Content="Adauga" HorizontalAlignment="Left" Margin="28,43,0,0" VerticalAlignment="Top" Width="75"/>
                     <Button x:Name="btnEditm" Content="Editeaza" HorizontalAlignment="Left" Margin="28,104,0,0" VerticalAlignment="Top" Width="75"/>
                     <Button x:Name="btnDeletem" Content="Sterge" HorizontalAlignment="Left" Margin="28,161,0,0" VerticalAlignment="Top" Width="75"/>
                     <Button x:Name="btnSavem" Content="Salveaza" HorizontalAlignment="Left" Margin="28,215,0,0" VerticalAlignment="Top" Width="75"/>
-                    <Button x:Name="btnCancelm" Content="Anuleaza" HorizontalAlignment="Left" Margin="28,278,0,0" VerticalAlignment="Top" Width="75"/>
+                    <Button x:Name="btnCancelm" Content="Anuleaza" HorizontalAlignment="Left" Margin="28,278,0,0" VerticalAlignment="Top" Width="75"/>-->
+                    <Button x:Name="btnPreviousm" Content="Ant" HorizontalAlignment="Left" Margin="205,145,0,0" VerticalAlignment="Top" Width="75" Click="btnPreviousm_Click"/>
+                    <Button x:Name="btnNextm" Content="Urm" HorizontalAlignment="Left" Margin="545,145,0,0" VerticalAlignment="Top" Width="75" Click="btnNextm_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Programari">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#B0E0E6" DataContext="{StaticResource programariViewSource}">
+                    <ComboBox x:Name="cmbAnimale" HorizontalAlignment="Left" Margin="110,59,0,0" VerticalAlignment="Top" Width="120" SelectedValue="{Binding ElementName=programariDataGrid,Path=SelectedItem.AnimalId,Mode=OneWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} {1} {2} {3}">
+                                            <Binding Path="Rasa"/>
+                                            <Binding Path="Tip"/>
+                                            <Binding Path="Varsta"/>
+                                            <Binding Path="Problema"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox x:Name="cmbMedici" HorizontalAlignment="Left" Margin="347,59,0,0" VerticalAlignment="Top" Width="120" SelectedValue="{Binding ElementName=programariDataGrid,Path=SelectedItem.MedicId,Mode=OneWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} {1} {2} {3}">
+                                            <Binding Path="Nume"/>
+                                            <Binding Path="Prenume"/>
+                                            <Binding Path="Zi"/>
+                                            <Binding Path="Ora"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Label x:Name="lblAnimale" Content="Animale" HorizontalAlignment="Left" Margin="110,28,0,0" VerticalAlignment="Top" Width="120"/>
+                    <Label x:Name="lblMedici" Content="Medici" HorizontalAlignment="Left" Margin="347,33,0,0" VerticalAlignment="Top" Width="120"/>
+                    <!--<DataGrid x:Name="programariDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="36,122,40.4,158.8" RowDetailsVisibilityMode="VisibleWhenSelected"  IsSynchronizedWithCurrentItem="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="RasaColumn" Binding="{Binding Rasa}" Header="Rasa" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="TipColumn" Binding="{Binding Tip}" Header="Tip" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="VarstaColumn" Binding="{Binding Varsta}" Header="Varsta" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="ProblemaColumn" Binding="{Binding Problema}" Header="Problema" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="NumeColumn" Binding="{Binding Nume}" Header="Nume" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="PrenumeColumn" Binding="{Binding Prenume}" Header="Prenume" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="ZiColumn" Binding="{Binding Zi}" Header="Problema" Width="SizeToHeader"/>
+                        </DataGrid.Columns>
+                    </DataGrid>-->
+                    <DataGrid x:Name="programariDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="64,103,78.4,101.8" RowDetailsVisibilityMode="VisibleWhenSelected" IsSynchronizedWithCurrentItem="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="RasaColumn" Binding="{Binding Rasa}" Header="Rasa" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="TipColumn" Binding="{Binding Tip}" Header="Tip" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="VarstaColumn" Binding="{Binding Varsta}" Header="Varsta" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="ProblemaColumn" Binding="{Binding Problema}" Header="Problema" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="NumeColumn" Binding="{Binding Nume}" Header="Nume" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="PrenumeColumn" Binding="{Binding Prenume}" Header="Prenume" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="ZiColumn" Binding="{Binding Zi}" Header="Zi" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="OraColumn" Binding="{Binding Ora}" Header="Ora" Width="SizeToHeader"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid x:Name="grid3" HorizontalAlignment="Left" Margin="219,223,0,0" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Animal Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+                        <TextBox x:Name="animalIdTextBox1" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding AnimalId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                        <Label Content="Medic Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+                        <TextBox x:Name="medicIdTextBox1" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="1" Text="{Binding MedicId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                        <Label Content="Programare Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+                        <TextBox x:Name="programareIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" Text="{Binding ProgramareId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                    </Grid>
+                </Grid>
             </TabItem>
         </TabControl>
+        <GroupBox x:Name="gbOperations"  Button.Click="gbOperations_Click" Header="" HorizontalAlignment="Left" Height="89" Margin="11,87,0,0" VerticalAlignment="Top" Width="92">
+            <StackPanel x:Name="spOperations">
+                <Button x:Name="btnNew" Content="Adauga" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="btnNew_Click" />
+                <Button x:Name="btnEdit" Content="Editeaza" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="btnEdit_Click"  />
+                <Button x:Name="btnDelete" Content="Sterge" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="btnDelete_Click" />
+            </StackPanel>
+        </GroupBox>
+        <GroupBox x:Name="gbActions" Header="" HorizontalAlignment="Left" Height="78" Margin="11,268,0,0" VerticalAlignment="Top" Width="92">
+            <StackPanel HorizontalAlignment="Left" Height="48"  VerticalAlignment="Top" Width="80">
+                <Button x:Name="btnSave" Content="Salveaza" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnSave_Click" >
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="IsEnabled" Value="false" />
+                            <Style.Triggers>
+                                <!--Butonul Save va fi inactiv daca exista erori de validare -->
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ElementName=problemaTextBox, Path=(Validation.HasError)}" Value="false" />
+                                        <Condition Binding="{Binding ElementName=rasaTextBox, Path=(Validation.HasError)}" Value="false" />
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="IsEnabled" Value="true" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="btnCancel" Content="Anuleaza" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="btnCancel_Click"/>
+            </StackPanel>
+        </GroupBox>
 
     </Grid>
 </Window>
